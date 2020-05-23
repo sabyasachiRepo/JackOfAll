@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="spinner_style">
+        <item name="android:layout_width">@dimen/component_width</item>
+        <item name="android:layout_height">@dimen/component_height</item>
+        <item name="android:background">@drawable/gradient_spinner</item>
+        <item name="android:layout_marginTop">50dp</item>
+
+    </style>
+</resources>

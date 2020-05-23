@@ -1,0 +1,4 @@
+rootProject.name='JackOfAll'
+include ':app'
+include ':core_lib'
+include ':money_exchange_rate'

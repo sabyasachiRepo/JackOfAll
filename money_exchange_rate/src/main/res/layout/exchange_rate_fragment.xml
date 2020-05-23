@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:padding="@dimen/app_padding"
+    tools:context="com.tools.money.ExchangeRateFragment">
+
+    <EditText
+        android:padding="@dimen/app_padding"
+        android:background="@drawable/edit_text_bg"
+        android:id="@+id/et_amount"
+        android:layout_width="@dimen/component_width"
+        android:layout_height="@dimen/component_height"
+        android:layout_marginTop="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/spinner_from_currency"
+        app:layout_constraintLeft_toLeftOf="@id/spinner_from_currency" />
+
+    <Spinner
+        android:id="@+id/spinner_from_currency"
+        style="@style/spinner_style"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/et_amount" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/spinner_to_currency"
+        app:layout_constraintLeft_toLeftOf="@id/spinner_to_currency" />
+
+    <Spinner
+        android:id="@+id/spinner_to_currency"
+        style="@style/spinner_style"
+        android:layout_marginTop="50dp"
+        app:layout_constraintLeft_toLeftOf="@id/spinner_from_currency"
+        app:layout_constraintRight_toRightOf="@id/spinner_from_currency"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_from_currency" />
+
+    <Button
+        android:id="@+id/convert"
+        android:layout_width="@dimen/component_width"
+        android:layout_height="@dimen/component_height"
+        android:layout_marginTop="50dp"
+        android:text="@string/convert"
+        app:layout_constraintLeft_toLeftOf="@id/spinner_to_currency"
+        app:layout_constraintRight_toRightOf="@id/spinner_to_currency"
+        app:layout_constraintTop_toBottomOf="@id/spinner_to_currency" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
