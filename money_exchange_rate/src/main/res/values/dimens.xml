@@ -2,4 +2,6 @@
 <resources>
     <dimen name="component_width">300dp</dimen>
     <dimen name="component_height">50dp</dimen>
+    <dimen name="text_size">20sp</dimen>
+    <dimen name="app_margin_top">50dp</dimen>
 </resources>

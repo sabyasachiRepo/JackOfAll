@@ -1,14 +1,6 @@
 package com.tools.money;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.tools.money_exchange_rate.R;
-
-import java.util.List;
 
 
 public class ExchangeRateFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
@@ -33,6 +28,7 @@ public class ExchangeRateFragment extends Fragment implements AdapterView.OnItem
     private EditText etAmount;
     private String fromCurrency;
     private String toCurrency;
+    private TextView tvConvertRate;
 
     public static ExchangeRateFragment newInstance() {
         return new ExchangeRateFragment();
@@ -56,8 +52,9 @@ public class ExchangeRateFragment extends Fragment implements AdapterView.OnItem
     private void initView(View view) {
         spFromCurrency = view.findViewById(R.id.spinner_from_currency);
         spToCurrency = view.findViewById(R.id.spinner_to_currency);
-        btConvert = view.findViewById(R.id.convert);
+        btConvert = view.findViewById(R.id.bt_convert);
         etAmount = view.findViewById(R.id.et_amount);
+        tvConvertRate = view.findViewById(R.id.tv_convert_rate);
 
         spFromCurrency.setOnItemSelectedListener(this);
         spToCurrency.setOnItemSelectedListener(this);
@@ -71,8 +68,6 @@ public class ExchangeRateFragment extends Fragment implements AdapterView.OnItem
             currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spFromCurrency.setAdapter(currencyAdapter);
             spToCurrency.setAdapter(currencyAdapter);
-
-
         });
     }
 
@@ -94,11 +89,8 @@ public class ExchangeRateFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onClick(View v) {
-        mViewModel.getConvertRate(fromCurrency, toCurrency, etAmount.getText().toString()).observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-
-            }
+        mViewModel.getConvertRate(fromCurrency, toCurrency, etAmount.getText().toString()).observe(this, result -> {
+            tvConvertRate.setText(result);
         });
     }
 }

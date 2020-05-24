@@ -24,6 +24,6 @@ public interface CurrencyAPI {
             "x-rapidapi-key:xqHhD8Viw0mshdfXqdmyYwkpirccp1ZMhPejsnT7iBCSqthqK8",
             "format:json"})
     @GET("convert")
-    LiveData<Resource<CurrencyListResponse>> getConvertRate(@QueryMap Map<String, String> queryParams);
+    LiveData<Resource<ConvertRateResponse>> getConvertRate(@QueryMap Map<String, String> queryParams);
 
 }

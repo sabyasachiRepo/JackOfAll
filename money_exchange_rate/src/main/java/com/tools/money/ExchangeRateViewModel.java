@@ -2,16 +2,11 @@ package com.tools.money;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.github.leonardoxh.livedatacalladapter.Resource;
-import com.google.gson.JsonArray;
-import com.tools.money.network.CurrencyListResponse;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.tools.money.network.ConvertRateResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,9 +15,9 @@ import java.util.Map;
 
 public class ExchangeRateViewModel extends ViewModel {
 
-    MediatorLiveData<List<String>> currencies = new MediatorLiveData<>();
+    private MediatorLiveData<List<String>> currencies = new MediatorLiveData<>();
     private ExchangeRateRepo exchangeRateRepo = new ExchangeRateRepo();
-    MediatorLiveData<List<String>> convertRate = new MediatorLiveData<>();
+    private MediatorLiveData<String> convertRate = new MediatorLiveData<>();
 
     public ExchangeRateRepo getExchangeRateRepo() {
         return exchangeRateRepo;
@@ -38,16 +33,27 @@ public class ExchangeRateViewModel extends ViewModel {
         return currencies;
     }
 
-    public LiveData<List<String>> getConvertRate(String from, String to, String amount) {
+    public LiveData<String> getConvertRate(String fromCurrency, String toCurrency, String amount) {
+        StringBuilder result = new StringBuilder();
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("format", "json");
-        queryParam.put("from", from);
-        queryParam.put("to", to);
+        queryParam.put("from", fromCurrency);
+        queryParam.put("to", toCurrency);
         queryParam.put("amount", amount);
-        convertRate.addSource(exchangeRateRepo.getConvertRate(queryParam), new Observer<Resource<CurrencyListResponse>>() {
+        convertRate.addSource(exchangeRateRepo.getConvertRate(queryParam), new Observer<Resource<ConvertRateResponse>>() {
             @Override
-            public void onChanged(Resource<CurrencyListResponse> currencyListResponseResource) {
-                convertRate.setValue(new ArrayList<>());
+            public void onChanged(Resource<ConvertRateResponse> convertRateResponseResource) {
+                if (convertRateResponseResource.isSuccess()) {
+                    ConvertRateResponse convertRateResponse = convertRateResponseResource.getResource();
+                    result.append(convertRateResponse.getAmount());
+                    result.append(" ");
+                    result.append(convertRateResponse.getBaseCurrencyCode());
+                    result.append(" = ");
+                    result.append(convertRateResponse.getRates().get(toCurrency).getRateForAmount());
+                    result.append(" ");
+                    result.append(toCurrency);
+                    convertRate.setValue(result.toString());
+                }
             }
         });
         return convertRate;
