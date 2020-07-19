@@ -14,6 +14,8 @@ android {
 
     }
     compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
@@ -24,4 +26,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app')
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.4'
+
 }

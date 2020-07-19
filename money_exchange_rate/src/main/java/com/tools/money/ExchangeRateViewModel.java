@@ -13,14 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class ExchangeRateViewModel extends ViewModel {
 
     private MediatorLiveData<List<String>> currencies = new MediatorLiveData<>();
-    private ExchangeRateRepo exchangeRateRepo = new ExchangeRateRepo();
+    private ExchangeRateRepo exchangeRateRepo;
     private MediatorLiveData<String> convertRate = new MediatorLiveData<>();
 
-    public ExchangeRateRepo getExchangeRateRepo() {
-        return exchangeRateRepo;
+    @Inject
+    public ExchangeRateViewModel(ExchangeRateRepo exchangeRateRepo) {
+        this.exchangeRateRepo = exchangeRateRepo;
     }
 
     public LiveData<List<String>> getCurrencies() {

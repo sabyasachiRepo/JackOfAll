@@ -1,5 +1,6 @@
 package com.tools.money;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.tools.money.injection.DaggerMoneyExchangeComponent;
+import com.tools.money.injection.MoneyExchangeComponent;
 import com.tools.money_exchange_rate.R;
+
+import javax.inject.Inject;
 
 
 public class ExchangeRateFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    private ExchangeRateViewModel mViewModel;
+    ExchangeRateViewModel mViewModel;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
+
     private Spinner spFromCurrency;
     private Spinner spToCurrency;
     private Button btConvert;
@@ -35,9 +44,15 @@ public class ExchangeRateFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        DaggerMoneyExchangeComponent.create().inject(this);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ExchangeRateViewModel.class);
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExchangeRateViewModel.class);
         getCurrencies();
     }
 

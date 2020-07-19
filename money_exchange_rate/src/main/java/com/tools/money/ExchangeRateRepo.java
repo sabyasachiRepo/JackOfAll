@@ -11,10 +11,19 @@ import com.tools.money.network.CurrencyListResponse;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class ExchangeRateRepo {
 
+    private CurrencyAPI currencyAPI;
+
+    @Inject
+    public ExchangeRateRepo(CurrencyAPI currencyAPI) {
+        this.currencyAPI = currencyAPI;
+    }
+
     LiveData<Resource<CurrencyListResponse>> getCurrencyList() {
-        return RetrofitProvider.getINSTANCE().getRetrofit().create(CurrencyAPI.class).getCurrencyList();
+        return currencyAPI.getCurrencyList();
     }
 
     LiveData<Resource<ConvertRateResponse>> getConvertRate(Map query) {
