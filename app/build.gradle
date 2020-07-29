@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
 
 android {
     compileSdkVersion 29
@@ -20,11 +22,20 @@ android {
         }
     }
 
-    dynamicFeatures = [":money_exchange_rate"]
+    dynamicFeatures = [":money_exchange_rate", ':news']
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+
+
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
 }
 
 dependencies {
@@ -33,4 +44,6 @@ dependencies {
 
 
     api project(path: ':core_lib')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

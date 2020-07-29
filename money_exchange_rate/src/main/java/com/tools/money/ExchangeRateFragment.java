@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.tools.money.injection.DaggerMoneyExchangeComponent;
-import com.tools.money.injection.MoneyExchangeComponent;
 import com.tools.money_exchange_rate.R;
 
 import javax.inject.Inject;
@@ -78,6 +77,9 @@ public class ExchangeRateFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void getCurrencies() {
+        //  Stream<String> streamEmpty = Stream.empty();
+
+
         mViewModel.getCurrencies().observe(this, currencies -> {
             ArrayAdapter<String> currencyAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, currencies);
             currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
