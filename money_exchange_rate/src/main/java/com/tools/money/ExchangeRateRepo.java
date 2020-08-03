@@ -27,6 +27,6 @@ public class ExchangeRateRepo {
     }
 
     LiveData<Resource<ConvertRateResponse>> getConvertRate(Map query) {
-        return RetrofitProvider.getINSTANCE().getRetrofit().create(CurrencyAPI.class).getConvertRate(query);
+        return RetrofitProvider.getINSTANCE().getMoneyExchangeRetrofit().create(CurrencyAPI.class).getConvertRate(query);
     }
 }

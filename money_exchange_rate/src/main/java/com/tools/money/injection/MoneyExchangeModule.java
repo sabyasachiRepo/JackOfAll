@@ -14,7 +14,7 @@ public class MoneyExchangeModule {
 
     @Provides
      CurrencyAPI provideCurrencyAPI() {
-        return RetrofitProvider.getINSTANCE().getRetrofit().create(CurrencyAPI.class);
+        return RetrofitProvider.getINSTANCE().getMoneyExchangeRetrofit().create(CurrencyAPI.class);
     }
 
     @Provides

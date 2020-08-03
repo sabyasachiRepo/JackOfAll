@@ -3,6 +3,8 @@ package com.tools.core.network;
 import com.github.leonardoxh.livedatacalladapter.LiveDataCallAdapterFactory;
 import com.github.leonardoxh.livedatacalladapter.LiveDataResponseBodyConverterFactory;
 
+import org.jetbrains.annotations.NotNull;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -19,20 +21,33 @@ public class RetrofitProvider {
         return INSTANCE;
     }
 
-    public Retrofit getRetrofit() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.level(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
-
+    public Retrofit getMoneyExchangeRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://currency-converter5.p.rapidapi.com/currency/")
                 .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
                 .addConverterFactory(LiveDataResponseBodyConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(getOkHttpClient())
                 .build();
         return retrofit;
     }
+
+    public Retrofit getNewsRetrofit() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://newsapi.org/v2/")
+                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getOkHttpClient())
+                .build();
+        return retrofit;
+    }
+
+    @NotNull
+    private OkHttpClient getOkHttpClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.level(HttpLoggingInterceptor.Level.BODY);
+        return new OkHttpClient.Builder().addInterceptor(interceptor).build();
+    }
+
 
 }

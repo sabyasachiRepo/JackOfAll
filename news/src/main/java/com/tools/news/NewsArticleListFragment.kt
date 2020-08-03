@@ -1,14 +1,20 @@
 package com.tools.news
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tools.news.dummy.DummyContent
+import com.tools.core.network.Status
+import com.tools.news.injection.DaggerNewsComponent
+import com.tools.news.network.Article
+import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
@@ -16,6 +22,14 @@ import com.tools.news.dummy.DummyContent
 class NewsArticleListFragment : Fragment() {
 
     private var columnCount = 1
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    lateinit var newsViewModel: NewsViewModel
+
+    private lateinit var articleAdapter: MyNewsArticlesRecyclerViewAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +39,41 @@ class NewsArticleListFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerNewsComponent.create().inject(this)
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        newsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NewsViewModel::class.java)
+        getTopHeadLines()
+    }
+
+    private fun getTopHeadLines() {
+        newsViewModel.getTopHeadLines().observe(this, Observer {
+
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        resource.data?.let { it -> retrieveArticle(it.articles) }
+                    }
+                    Status.ERROR -> {
+
+                    }
+                    Status.LOADING -> {
+
+                    }
+                }
+            }
+        })
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_news_article_list, container, false)
-
+        articleAdapter = MyNewsArticlesRecyclerViewAdapter(arrayListOf())
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
@@ -36,7 +81,7 @@ class NewsArticleListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyNewsArticlesRecyclerViewAdapter(DummyContent.ITEMS)
+                adapter = articleAdapter
             }
         }
         return view
@@ -55,5 +100,12 @@ class NewsArticleListFragment : Fragment() {
                         putInt(ARG_COLUMN_COUNT, columnCount)
                     }
                 }
+    }
+
+    private fun retrieveArticle(articles: List<Article>) {
+        articleAdapter.apply {
+            articleAdapter.addArticles(articles)
+            notifyDataSetChanged()
+        }
     }
 }
