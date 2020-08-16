@@ -16,7 +16,7 @@ import com.google.android.play.core.splitinstall.*
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.tools.core.FeatureRegistryImpl
 
-class MainFragment  // TODO: Rename parameter arguments, choose names that match
+class MainFragment
     : Fragment() {
 
     private lateinit var manager: SplitInstallManager
@@ -31,7 +31,6 @@ class MainFragment  // TODO: Rename parameter arguments, choose names that match
         View.OnClickListener {
             when (it.id) {
                 R.id.btn_news -> loadAndLaunchModule(moduleNews)
-
             }
         }
     }

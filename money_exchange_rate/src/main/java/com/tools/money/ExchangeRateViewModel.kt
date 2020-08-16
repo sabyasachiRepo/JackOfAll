@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class ExchangeRateViewModel @Inject constructor(private val exchangeRateRepo: ExchangeRateRepo) : ViewModel() {
     private val currencies = MediatorLiveData<List<String>>()
-    private val convertRate = MediatorLiveData<String>()
+    val convertRate = MediatorLiveData<String>()
     fun getCurrencies(): LiveData<List<String>> {
         currencies.addSource(exchangeRateRepo.currencyList) { currencyListResponseResource: Resource<CurrencyListResponse> ->
             if (currencyListResponseResource.isSuccess) {
@@ -40,6 +40,25 @@ class ExchangeRateViewModel @Inject constructor(private val exchangeRateRepo: Ex
             }
         })
         return convertRate
+    }
+
+    fun getConvertRateNew(amount: String): Unit {
+        val result = StringBuilder()
+        val queryParam = mapOf("format" to "json", "from" to fromCurrency, "to" to toCurrency, "amount" to amount)
+
+        convertRate.addSource(exchangeRateRepo.getConvertRate(queryParam)) { convertRateResponseResource ->
+            if (convertRateResponseResource.isSuccess) {
+                val convertRateResponse = convertRateResponseResource.resource
+                result.append(convertRateResponse!!.amount)
+                result.append(" ")
+                result.append(convertRateResponse.baseCurrencyCode)
+                result.append(" = ")
+                result.append(convertRateResponse.rates[toCurrency]!!.rateForAmount)
+                result.append(" ")
+                result.append(toCurrency)
+                convertRate.value = result.toString()
+            }
+        }
     }
 
     var fromCurrency = exchangeRateRepo.lastFromCurrency

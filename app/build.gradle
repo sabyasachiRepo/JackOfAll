@@ -39,6 +39,9 @@ android {
         includeInBundle = false
     }
 
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
