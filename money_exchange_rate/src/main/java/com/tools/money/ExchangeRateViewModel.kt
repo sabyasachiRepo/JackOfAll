@@ -1,64 +1,54 @@
 package com.tools.money
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import com.github.leonardoxh.livedatacalladapter.Resource
-import com.tools.money.network.ConvertRateResponse
-import com.tools.money.network.CurrencyListResponse
-import java.util.*
+import androidx.lifecycle.liveData
+import com.tools.core.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
-class ExchangeRateViewModel @Inject constructor(private val exchangeRateRepo: ExchangeRateRepo) : ViewModel() {
-    private val currencies = MediatorLiveData<List<String>>()
+class ExchangeRateViewModel @Inject constructor(private val exchangeRateRepo: ExchangeRateRepo) : BaseViewModel() {
     val convertRate = MediatorLiveData<String>()
-    fun getCurrencies(): LiveData<List<String>> {
-        currencies.addSource(exchangeRateRepo.currencyList) { currencyListResponseResource: Resource<CurrencyListResponse> ->
-            if (currencyListResponseResource.isSuccess) {
-                currencies.value = ArrayList(currencyListResponseResource.resource!!.currencies.keys)
-            }
+
+    fun getCurrencies() = liveData(Dispatchers.IO) {
+        emit(com.tools.core.network.Resource.loading(data = null))
+        try {
+            emit(com.tools.core.network.Resource.success(data = exchangeRateRepo.getCurrencyList()))
+        } catch (exception: Exception) {
+            emit(com.tools.core.network.Resource.error(data = null, message = exception.message
+                    ?: "Error Occurred!"))
         }
-        return currencies
+
     }
 
-    fun getConvertRate(fromCurrency: String, toCurrency: String, amount: String): LiveData<String> {
-        val result = StringBuilder()
-        val queryParam = mapOf("format" to "json", "from" to fromCurrency, "to" to toCurrency, "amount" to amount)
-
-        convertRate.addSource(exchangeRateRepo.getConvertRate(queryParam), Observer<Resource<ConvertRateResponse>> { convertRateResponseResource ->
-            if (convertRateResponseResource.isSuccess) {
-                val convertRateResponse = convertRateResponseResource.resource
-                result.append(convertRateResponse!!.amount)
+    fun getConvertRate(amountToConvert: String) {
+        convertRate.addSource(convert(amountToConvert)) { convertRateResponseResource ->
+            val result = StringBuilder()
+            val convertRateResponse = convertRateResponseResource.data
+            convertRateResponse?.apply {
+                result.append(amount)
                 result.append(" ")
-                result.append(convertRateResponse.baseCurrencyCode)
+                result.append(baseCurrencyCode)
                 result.append(" = ")
-                result.append(convertRateResponse.rates[toCurrency]!!.rateForAmount)
+                result.append(rates[toCurrency]?.rateForAmount)
                 result.append(" ")
                 result.append(toCurrency)
                 convertRate.value = result.toString()
             }
-        })
-        return convertRate
+
+
+        }
     }
 
-    fun getConvertRateNew(amount: String): Unit {
-        val result = StringBuilder()
+    private fun convert(amount: String) = liveData(Dispatchers.IO) {
         val queryParam = mapOf("format" to "json", "from" to fromCurrency, "to" to toCurrency, "amount" to amount)
-
-        convertRate.addSource(exchangeRateRepo.getConvertRate(queryParam)) { convertRateResponseResource ->
-            if (convertRateResponseResource.isSuccess) {
-                val convertRateResponse = convertRateResponseResource.resource
-                result.append(convertRateResponse!!.amount)
-                result.append(" ")
-                result.append(convertRateResponse.baseCurrencyCode)
-                result.append(" = ")
-                result.append(convertRateResponse.rates[toCurrency]!!.rateForAmount)
-                result.append(" ")
-                result.append(toCurrency)
-                convertRate.value = result.toString()
-            }
+        emit(com.tools.core.network.Resource.loading(data = null))
+        try {
+            emit(com.tools.core.network.Resource.success(data = exchangeRateRepo.getConvertRate(queryParam)))
+        } catch (exception: Exception) {
+            emit(com.tools.core.network.Resource.error(data = null, message = exception.message
+                    ?: "Error Occurred!"))
         }
+
     }
 
     var fromCurrency = exchangeRateRepo.lastFromCurrency

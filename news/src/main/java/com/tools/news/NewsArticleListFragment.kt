@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tools.core.BaseFragment
 import com.tools.core.network.Status
 import com.tools.news.injection.DaggerNewsComponent
 import com.tools.news.network.Article
@@ -19,14 +19,14 @@ import javax.inject.Inject
 /**
  * A fragment representing a list of Items.
  */
-class NewsArticleListFragment : Fragment() {
+class NewsArticleListFragment : BaseFragment<NewsViewModel>() {
 
     private var columnCount = 1
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    lateinit var newsViewModel: NewsViewModel
+    override lateinit var viewModel: NewsViewModel
 
     private lateinit var articleAdapter: MyNewsArticlesRecyclerViewAdapter
 
@@ -47,12 +47,12 @@ class NewsArticleListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        newsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NewsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(NewsViewModel::class.java)
         getTopHeadLines()
     }
 
     private fun getTopHeadLines() {
-        newsViewModel.getTopHeadLines().observe(this, Observer {
+        viewModel.getTopHeadLines().observe(viewLifecycleOwner, Observer {
 
             it?.let { resource ->
                 when (resource.status) {

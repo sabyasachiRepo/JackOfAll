@@ -31,7 +31,7 @@ class MainActivity : BaseActivity(), CommunicationLib {
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (currentFocus != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
         return super.dispatchTouchEvent(ev)
     }

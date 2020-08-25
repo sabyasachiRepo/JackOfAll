@@ -69,7 +69,7 @@
             android:layout_width="@dimen/component_width"
             android:layout_height="@dimen/component_height"
             android:layout_marginTop="@dimen/app_margin_top"
-            android:onClick="@{()->viewModel.getConvertRateNew(etAmount.getText().toString())}"
+            android:onClick="@{()->viewModel.getConvertRate(etAmount.getText().toString())}"
             android:text="@string/convert"
             app:layout_constraintLeft_toLeftOf="@id/spinner_to_currency"
             app:layout_constraintRight_toRightOf="@id/spinner_to_currency"

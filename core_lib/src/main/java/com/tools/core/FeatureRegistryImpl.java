@@ -7,7 +7,7 @@ public class FeatureRegistryImpl implements FeatureRegistry {
 
     private static FeatureRegistryImpl featureRegistry;
 
-    private List<Feature> featureList = new ArrayList<>();
+    private List<StaticFeature> featureList = new ArrayList<>();
 
     private FeatureRegistryImpl() {
     }
@@ -25,12 +25,12 @@ public class FeatureRegistryImpl implements FeatureRegistry {
     }
 
     @Override
-    public List<Feature> getFeatureList() {
+    public List<StaticFeature> getStaticFeatureList() {
         return featureList;
     }
 
     @Override
-    public void register(Feature feature) {
+    public void register(StaticFeature feature) {
         featureList.add(feature);
     }
 }

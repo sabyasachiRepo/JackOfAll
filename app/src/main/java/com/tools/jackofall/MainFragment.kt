@@ -77,7 +77,7 @@ class MainFragment
         progressBar = view.findViewById(R.id.progress_bar)
         progressText = view.findViewById(R.id.progress_text)
         setupClickListener(view)
-        addFeatures(view.findViewById(R.id.entry_point_container))
+        addStaticFeatures(view.findViewById(R.id.entry_point_container))
         return view
     }
 
@@ -105,11 +105,10 @@ class MainFragment
         view.findViewById<View>(id).setOnClickListener(listener)
     }
 
-    private fun addFeatures(view: View) {
+    private fun addStaticFeatures(view: View) {
         if (view is LinearLayout) {
-            val linearLayout = view
-            for (feature in FeatureRegistryImpl.getInstance().featureList) {
-                linearLayout.addView(feature.getFeatureEntryPoint(linearLayout))
+            for (feature in FeatureRegistryImpl.getInstance().staticFeatureList) {
+                view.addView(feature.getFeatureEntryPoint(view))
             }
         }
 

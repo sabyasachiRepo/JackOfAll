@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tools.core.CoreLib;
-import com.tools.core.Feature;
+import com.tools.core.StaticFeature;
 import com.tools.money_exchange_rate.R;
 
-public class MoneyExchangeFeature implements Feature {
+public class MoneyExchangeFeature implements StaticFeature {
 
     Context context;
 
