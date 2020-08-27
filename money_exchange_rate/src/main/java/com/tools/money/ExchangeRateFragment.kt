@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tools.core.BaseFragment
@@ -37,7 +38,14 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateViewModel>(), OnItemSelect
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExchangeRateViewModel::class.java)
         binding.viewModel = viewModel
+        setToolBar()
         getCurrencies()
+    }
+
+    private fun setToolBar() {
+        setTitle("Money Exchange")
+        val icon = AppCompatResources.getDrawable(requireContext(), com.tools.jackofall.R.drawable.ic_back)
+        icon?.let(::setNavigationIcon)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

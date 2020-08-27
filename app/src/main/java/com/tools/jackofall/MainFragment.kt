@@ -11,14 +11,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.Group
-import androidx.fragment.app.Fragment
 import com.google.android.play.core.splitinstall.*
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import com.tools.core.BaseFragment
+import com.tools.core.BaseViewModel
 import com.tools.core.FeatureRegistryImpl
 
 class MainFragment
-    : Fragment() {
+    : BaseFragment<BaseViewModel>() {
 
+    override lateinit var viewModel: BaseViewModel
     private lateinit var manager: SplitInstallManager
     private val moduleNews by lazy { getString(R.string.title_news) }
     private lateinit var progress: Group
@@ -85,6 +87,8 @@ class MainFragment
     override fun onResume() {
         // Listener can be registered even without directly triggering a download.
         manager.registerListener(listener)
+        setTitle("Home")
+        hideNavigationIcon()
         super.onResume()
     }
 
