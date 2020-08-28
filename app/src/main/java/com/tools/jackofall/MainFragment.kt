@@ -3,30 +3,20 @@ package com.tools.jackofall
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.Group
 import com.google.android.play.core.splitinstall.*
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.tools.core.BaseFragment
-import com.tools.core.BaseViewModel
 import com.tools.core.FeatureRegistryImpl
+import com.tools.jackofall.databinding.FragmentMainBinding
 
 class MainFragment
-    : BaseFragment<BaseViewModel>() {
+    : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
-    override lateinit var viewModel: BaseViewModel
     private lateinit var manager: SplitInstallManager
     private val moduleNews by lazy { getString(R.string.title_news) }
-    private lateinit var progress: Group
-    private lateinit var buttons: Group
-    private lateinit var progressBar: ProgressBar
-    private lateinit var progressText: TextView
     private val packageName = "com.tools.news"
     private val newsArticleClassname = "$packageName.NewsArticleListActivity"
     private val clickListener by lazy {
@@ -71,16 +61,10 @@ class MainFragment
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_main, container, false)
-        buttons = view.findViewById(R.id.buttons)
-        progress = view.findViewById(R.id.progress)
-        progressBar = view.findViewById(R.id.progress_bar)
-        progressText = view.findViewById(R.id.progress_text)
-        setupClickListener(view)
-        addStaticFeatures(view.findViewById(R.id.entry_point_container))
-        return view
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setupClickListener(binding.root)
+        addStaticFeatures(binding.entryPointContainer)
     }
 
 
@@ -130,27 +114,27 @@ class MainFragment
     private fun displayLoadingState(state: SplitInstallSessionState, message: String) {
         displayProgress()
 
-        progressBar.max = state.totalBytesToDownload().toInt()
-        progressBar.progress = state.bytesDownloaded().toInt()
+        binding.progressBar.max = state.totalBytesToDownload().toInt()
+        binding.progressBar.progress = state.bytesDownloaded().toInt()
 
         updateProgressMessage(message)
     }
 
     private fun updateProgressMessage(message: String) {
-        if (progress.visibility != View.VISIBLE) displayProgress()
-        progressText.text = message
+        if (binding.progress.visibility != View.VISIBLE) displayProgress()
+        binding.progressText.text = message
     }
 
     /** Display progress bar and text. */
     private fun displayProgress() {
-        progress.visibility = View.VISIBLE
-        buttons.visibility = View.GONE
+        binding.progress.visibility = View.VISIBLE
+        binding.buttons.visibility = View.GONE
     }
 
     /** Display buttons to accept user input. */
     private fun displayButtons() {
-        progress.visibility = View.GONE
-        buttons.visibility = View.VISIBLE
+        binding.progress.visibility = View.GONE
+        binding.buttons.visibility = View.VISIBLE
     }
 
     /**
@@ -207,5 +191,10 @@ class MainFragment
     }
 
     private val TAG = "DynamicFeatures"
+    override fun getFactory() = defaultViewModelProviderFactory
+
+    override fun getViewModel() = MainViewModel::class.java
+
+    override fun getFragmentLayout() = R.layout.fragment_main
 
 }

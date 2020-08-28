@@ -12,6 +12,5 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:gravity="center"
-        app:title="Home"
         app:titleTextColor="@color/appWhite" />
 </com.google.android.material.appbar.AppBarLayout>

@@ -2,9 +2,7 @@ package com.tools.money
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -20,14 +18,13 @@ import com.tools.money_exchange_rate.R
 import com.tools.money_exchange_rate.databinding.ExchangeRateFragmentBinding
 import javax.inject.Inject
 
-class ExchangeRateFragment : BaseFragment<ExchangeRateViewModel>(), OnItemSelectedListener {
-    override lateinit var viewModel: ExchangeRateViewModel
+class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeRateViewModel>(), OnItemSelectedListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     private lateinit var spFromCurrency: Spinner
     private lateinit var spToCurrency: Spinner
-    private lateinit var binding: ExchangeRateFragmentBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = (activity?.applicationContext as JackOfAllApplication).appComponent
@@ -38,8 +35,16 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateViewModel>(), OnItemSelect
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExchangeRateViewModel::class.java)
         binding.viewModel = viewModel
-        setToolBar()
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+        }
+        initView()
         getCurrencies()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setToolBar()
     }
 
     private fun setToolBar() {
@@ -48,14 +53,6 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateViewModel>(), OnItemSelect
         icon?.let(::setNavigationIcon)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        binding = ExchangeRateFragmentBinding.inflate(inflater).apply {
-            lifecycleOwner = viewLifecycleOwner
-        }
-        initView()
-        return binding.root
-    }
 
     private fun initView() {
         spFromCurrency = binding.spinnerFromCurrency
@@ -110,4 +107,9 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateViewModel>(), OnItemSelect
             return ExchangeRateFragment()
         }
     }
+
+    override fun getFragmentLayout() = R.layout.exchange_rate_fragment
+    override fun getFactory() = viewModelFactory
+
+    override fun getViewModel() = ExchangeRateViewModel::class.java
 }
