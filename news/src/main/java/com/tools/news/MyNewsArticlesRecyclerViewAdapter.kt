@@ -4,13 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tools.news.databinding.ArticleItemBinding
-import com.tools.news.dummy.DummyContent.DummyItem
 import com.tools.news.network.Article
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
+
 class MyNewsArticlesRecyclerViewAdapter(
         private val values: ArrayList<Article>)
     : RecyclerView.Adapter<MyNewsArticlesRecyclerViewAdapter.ViewHolder>() {

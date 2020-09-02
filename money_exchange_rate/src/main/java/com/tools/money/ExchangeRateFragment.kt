@@ -112,4 +112,8 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeR
     override fun getFactory() = viewModelFactory
 
     override fun getViewModel() = ExchangeRateViewModel::class.java
+
+    override fun getToolBar() = binding.appbar.toolbar
+
+
 }

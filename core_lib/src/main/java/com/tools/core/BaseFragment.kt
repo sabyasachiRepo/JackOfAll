@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -17,11 +19,27 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         binding = DataBindingUtil.inflate(inflater, getFragmentLayout(), container, false)
-
         viewModel = ViewModelProviders.of(this, getFactory()).get(getViewModel())
+        setToolBar()
         return binding.root
+    }
+
+    private fun setToolBar() {
+        getToolBar()?.apply {
+            if (activity is AppCompatActivity) (activity as AppCompatActivity).setSupportActionBar(this)
+            setNavigationOnClickListener {
+                activity?.apply {
+                    if (supportFragmentManager.backStackEntryCount > 0) {
+                        supportFragmentManager.popBackStack()
+                    } else {
+                        onBackPressed()
+                    }
+                }
+
+            }
+        }
+
     }
 
     abstract fun getFactory(): ViewModelProvider.Factory
@@ -30,16 +48,26 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
 
     abstract fun getFragmentLayout(): Int
 
+    abstract fun getToolBar(): Toolbar?
+
 
     fun setTitle(title: String) {
-        CoreLib.appBarLib?.setAppBarTitle(title)
+        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.title = title
     }
 
     fun setNavigationIcon(drawable: Drawable) {
-        CoreLib.appBarLib?.setNavIcon(drawable)
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(drawable)
+
+            }
+        }
+
     }
 
     fun hideNavigationIcon() {
-        CoreLib.appBarLib?.hideNavIcon()
+        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
+
 }

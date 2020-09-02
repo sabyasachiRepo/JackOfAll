@@ -106,4 +106,7 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
     override fun getViewModel() = NewsViewModel::class.java
 
     override fun getFragmentLayout() = R.layout.fragment_news_article_list
+
+    override fun getToolBar() = binding.appbar.toolbar
+
 }

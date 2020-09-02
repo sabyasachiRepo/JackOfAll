@@ -3,13 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
-        android:name="com.tools.news.NewsArticleListFragment"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E3E0E0"
-        android:padding="5dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/article_item" />
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/appbar"
+            layout="@layout/app_bar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:name="com.tools.news.NewsArticleListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E3E0E0"
+            android:padding="5dp"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/article_item" />
+    </LinearLayout>
 </layout>

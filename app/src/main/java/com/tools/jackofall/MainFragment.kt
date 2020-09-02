@@ -196,5 +196,6 @@ class MainFragment
     override fun getViewModel() = MainViewModel::class.java
 
     override fun getFragmentLayout() = R.layout.fragment_main
+    override fun getToolBar() = binding.appbar.toolbar
 
 }
