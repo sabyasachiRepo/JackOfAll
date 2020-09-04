@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="110dp"
+    android:layout_width="@dimen/feature_launch_button_size"
     android:background="@drawable/circle"
-    android:layout_margin="15dp"
-    android:padding="15dp"
-    android:layout_height="110dp">
+    android:layout_height="@dimen/feature_launch_button_size"
+    android:layout_margin="@dimen/margin_medium"
+    android:padding="@dimen/margin_medium">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/feature_module_icon_size"
+        android:layout_height="@dimen/feature_module_icon_size"
         app:srcCompat="@drawable/ic_money" />
 
     <TextView
         android:textColor="@android:color/black"
-        android:textSize="13sp"
+        android:layout_width="@dimen/feature_module_text_width"
         android:gravity="center"
-        android:padding="10dp"
+        android:padding="@dimen/margin_small"
         app:layout_constraintTop_toBottomOf="@+id/iv_icon"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="100dp"
+        android:text="@string/money_exchange_rate"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="Money Exchange Rate" />
+        android:textSize="@dimen/feature_module_text_size" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,29 +3,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_margin="15dp"
+        android:layout_width="@dimen/feature_launch_button_size"
+        android:layout_height="@dimen/feature_launch_button_size"
+        android:layout_margin="@dimen/margin_medium"
         android:background="@drawable/circle"
-        android:padding="15dp">
+        android:padding="@dimen/margin_medium">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_news_icon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/feature_module_icon_size"
+            android:layout_height="@dimen/feature_module_icon_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_news" />
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="@dimen/feature_module_text_width"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="Trending NEWS"
+            android:padding="@dimen/margin_small"
+            android:text="@string/trending_news"
             android:textColor="@android:color/black"
-            android:textSize="13sp"
+            android:textSize="@dimen/feature_module_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_news_icon" />

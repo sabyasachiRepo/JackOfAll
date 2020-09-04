@@ -17,8 +17,8 @@
             android:name="com.tools.news.NewsArticleListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#E3E0E0"
-            android:padding="5dp"
+            android:background="@color/appWhite"
+            android:padding="@dimen/margin_small"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/article_item" />
     </LinearLayout>

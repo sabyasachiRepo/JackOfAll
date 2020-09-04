@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app')
+    implementation project(':core_lib')
 
     kapt 'com.google.dagger:dagger-android-processor:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.27'

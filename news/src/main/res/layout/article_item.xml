@@ -16,8 +16,8 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="4dp">
+        android:layout_margin="@dimen/margin_small"
+        card_view:cardCornerRadius="@dimen/card_corner_radious">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/iv_news_banner"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="@dimen/news_banner_width"
                 android:layout_margin="@dimen/text_margin"
                 app:imageUrl="@{article.urlToImage}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,8 +50,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_margin"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
                 android:text="@{article.source.name}"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"
@@ -64,7 +64,7 @@
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/text_margin"
                 android:layout_marginBottom="5dp"
                 android:text="@{article.author}"

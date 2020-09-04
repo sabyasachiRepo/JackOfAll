@@ -9,7 +9,7 @@ class OnBoardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_on_boarding)
-        findViewById<Button>(R.id.login).setOnClickListener {
+        findViewById<Button>(R.id.bt_lets_go).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

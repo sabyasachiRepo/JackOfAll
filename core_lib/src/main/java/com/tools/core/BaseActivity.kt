@@ -18,14 +18,6 @@ abstract class BaseActivity : AppCompatActivity(), CommunicationLib {
         CoreLib.communicationLib = this
     }
 
-    /* override fun setContentView(layoutResID: Int) {
-         val coordinatorLayout = layoutInflater.inflate(R.layout.activity_base, null)
-         val childActivityLayoutContainer = coordinatorLayout.findViewById<FrameLayout>(R.id.child_activity_container)
-         setSupportActionBar(coordinatorLayout.findViewById<Toolbar>(R.id.toolbar))
-         layoutInflater.inflate(layoutResID, childActivityLayoutContainer, true)
-         super.setContentView(coordinatorLayout)
-     }*/
-
     override fun replaceFragment(fragment: Fragment, addToBackStack: Boolean) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
