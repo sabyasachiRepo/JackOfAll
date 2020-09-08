@@ -1,8 +1,11 @@
 package com.tools.money
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import com.tools.core.BaseViewModel
+import com.tools.core.extn.EMPTY
 import com.tools.core.network.Resource
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -10,7 +13,17 @@ import javax.inject.Inject
 class ExchangeRateViewModel @Inject constructor(private val exchangeRateRepo: ExchangeRateRepo) : BaseViewModel() {
     val convertRate = MediatorLiveData<String>()
 
-    fun getCurrencies() = liveData(Dispatchers.IO) {
+    val currenciesLiveData = getCurrencies()
+
+    val isLoadingCurrencyData: LiveData<Boolean> = currenciesLiveData.map {
+        it == Resource.loading(data = null)
+    }
+
+    val isLoadingConvertRate = convertRate.map {
+        it == String.EMPTY
+    }
+
+    private fun getCurrencies() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = exchangeRateRepo.getCurrencyList()))
@@ -21,6 +34,7 @@ class ExchangeRateViewModel @Inject constructor(private val exchangeRateRepo: Ex
     }
 
     fun getConvertRate(amountToConvert: String) {
+        convertRate.value = String.EMPTY
         convertRate.addSource(convert(amountToConvert)) { convertRateResponseResource ->
             val result = StringBuilder()
             val convertRateResponse = convertRateResponseResource.data

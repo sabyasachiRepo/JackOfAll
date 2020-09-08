@@ -1,5 +1,6 @@
 package com.tools.core.ui
 
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -11,4 +12,9 @@ fun loadImage(view: ImageView, url: String?) {
             .load(url)
             .into(view)
 
+}
+
+@BindingAdapter("goneUnless")
+fun goneUnless(view: View, visible: Boolean) {
+    view.visibility = if (visible) View.VISIBLE else View.GONE
 }

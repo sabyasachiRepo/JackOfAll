@@ -62,7 +62,7 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeR
     }
 
     private fun getCurrencies() {
-        viewModel.getCurrencies().observe(viewLifecycleOwner, Observer {
+        viewModel.currenciesLiveData.observe(viewLifecycleOwner, Observer {
 
             it?.let { resource ->
                 when (resource.status) {
