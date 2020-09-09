@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_margin">10dp</dimen>
-    <dimen name="news_banner_width">110dp</dimen>
+    <dimen name="news_banner_height">170dp</dimen>
     <dimen name="card_corner_radious">4dp</dimen>
+    <dimen name="news_title_text_size">16sp</dimen>
 </resources>

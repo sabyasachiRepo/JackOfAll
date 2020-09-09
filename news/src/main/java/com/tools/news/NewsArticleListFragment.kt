@@ -43,6 +43,10 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         articleAdapter = MyNewsArticlesRecyclerViewAdapter(arrayListOf())
+        binding.viewModel = viewModel
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+        }
         binding.list.adapter = articleAdapter
         LinearLayoutManager(context)
         getTopHeadLines()
@@ -61,7 +65,7 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
     }
 
     private fun getTopHeadLines() {
-        viewModel.getTopHeadLines().observe(viewLifecycleOwner, Observer {
+        viewModel.headLines.observe(viewLifecycleOwner, Observer {
 
             it?.let { resource ->
                 when (resource.status) {
@@ -81,10 +85,8 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
 
     companion object {
 
-        // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
                 NewsArticleListFragment().apply {
