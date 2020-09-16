@@ -113,7 +113,7 @@ class MainFragment
     /** Display a loading state to the user. */
     private fun displayLoadingState(state: SplitInstallSessionState, message: String) {
         displayProgress()
-
+        binding.progressBar.isIndeterminate = false
         binding.progressBar.max = state.totalBytesToDownload().toInt()
         binding.progressBar.progress = state.bytesDownloaded().toInt()
 
@@ -128,6 +128,7 @@ class MainFragment
     /** Display progress bar and text. */
     private fun displayProgress() {
         binding.progress.visibility = View.VISIBLE
+        binding.progressBar.isIndeterminate = true
         binding.buttons.visibility = View.GONE
     }
 

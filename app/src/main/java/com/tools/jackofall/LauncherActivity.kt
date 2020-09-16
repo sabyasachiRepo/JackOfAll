@@ -15,7 +15,7 @@ class LauncherActivity : AppCompatActivity() {
                 finish()
             }
             LaunchType.ON_BOARDING -> {
-                startActivity(Intent(this, OnBoardingActivity::class.java))
+                startActivity(Intent(this, SplashScreenActivity::class.java))
                 finish()
             }
 
