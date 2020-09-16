@@ -46,8 +46,8 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
         binding.viewModel = viewModel
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
+            list.adapter = articleAdapter
         }
-        binding.list.adapter = articleAdapter
         LinearLayoutManager(context)
         getTopHeadLines()
 
@@ -70,12 +70,13 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        resource.data?.let { it -> retrieveArticle(it.articles) }
+                        resource.data?.let { it -> showArticles(it.articles) }
                     }
                     Status.ERROR -> {
-
+                        showErrorAlertMessage()
                     }
                     Status.LOADING -> {
+                        // not required to handle
 
                     }
                 }
@@ -96,7 +97,7 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
                 }
     }
 
-    private fun retrieveArticle(articles: List<Article>) {
+    private fun showArticles(articles: List<Article>) {
         articleAdapter.apply {
             articleAdapter.addArticles(articles)
             notifyDataSetChanged()

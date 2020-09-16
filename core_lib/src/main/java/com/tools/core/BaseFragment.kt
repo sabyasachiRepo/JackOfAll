@@ -1,10 +1,12 @@
 package com.tools.core
 
+import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -68,6 +70,19 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
 
     fun hideNavigationIcon() {
         if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+    fun showErrorAlertMessage(title: String = "Error!", message: String = "Error while getting data") {
+        activity?.let {
+            AlertDialog.Builder(it).apply {
+                setTitle(title)
+                setMessage(message)
+                setPositiveButton("Ok", DialogInterface.OnClickListener { view, _ -> view.dismiss() })
+                show()
+            }
+
+        }
+
     }
 
 }

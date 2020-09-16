@@ -7,6 +7,7 @@ import androidx.lifecycle.map
 import com.tools.core.BaseViewModel
 import com.tools.core.extn.EMPTY
 import com.tools.core.network.Resource
+import com.tools.core.network.Status
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
@@ -36,17 +37,25 @@ class ExchangeRateViewModel @Inject constructor(private val exchangeRateRepo: Ex
     fun getConvertRate(amountToConvert: String) {
         convertRate.value = String.EMPTY
         convertRate.addSource(convert(amountToConvert)) { convertRateResponseResource ->
-            val result = StringBuilder()
-            val convertRateResponse = convertRateResponseResource.data
-            convertRateResponse?.apply {
-                result.append(amount)
-                result.append(" ")
-                result.append(baseCurrencyCode)
-                result.append(" = ")
-                result.append(rates[toCurrency]?.rateForAmount)
-                result.append(" ")
-                result.append(toCurrency)
-                convertRate.value = result.toString()
+            when (convertRateResponseResource.status) {
+                Status.SUCCESS -> {
+                    val result = StringBuilder()
+                    val convertRateResponse = convertRateResponseResource.data
+                    convertRateResponse?.apply {
+                        result.append(amount)
+                        result.append(" ")
+                        result.append(baseCurrencyCode)
+                        result.append(" = ")
+                        result.append(rates[toCurrency]?.rateForAmount)
+                        result.append(" ")
+                        result.append(toCurrency)
+                        convertRate.value = result.toString()
+                    }
+                }
+                Status.ERROR -> {
+                    convertRate.value = "Error while getting data!"
+                }
+
             }
 
 

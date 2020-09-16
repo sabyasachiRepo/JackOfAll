@@ -15,9 +15,7 @@ class NewsViewModel @Inject constructor(private val newsRepo: NewsRepo) : BaseVi
         it == Resource.loading(data = null)
     }
     val isEmpty = headLines.map { it ->
-        it.data?.let { newsArticle ->
-            newsArticle.articles.isEmpty()
-        }
+        it.data?.articles?.isEmpty() ?: true
     }
 
     private fun getTopHeadLines() = liveData(Dispatchers.IO) {

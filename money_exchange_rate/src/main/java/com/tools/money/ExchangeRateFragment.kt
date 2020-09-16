@@ -16,6 +16,7 @@ import com.tools.jackofall.JackOfAllApplication
 import com.tools.money.injection.DaggerMoneyExchangeComponent
 import com.tools.money_exchange_rate.R
 import com.tools.money_exchange_rate.databinding.ExchangeRateFragmentBinding
+import timber.log.Timber
 import javax.inject.Inject
 
 class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeRateViewModel>(), OnItemSelectedListener {
@@ -78,11 +79,10 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeR
                         spToCurrency.setSelection(historyToCurrency)
                     }
                     Status.ERROR -> {
-
+                        Timber.d("Error while getting currency data")
+                        showErrorAlertMessage()
                     }
-                    Status.LOADING -> {
 
-                    }
                 }
             }
         })
