@@ -7,9 +7,9 @@ import com.tools.news.databinding.ArticleItemBinding
 import com.tools.news.network.Article
 
 
-class MyNewsArticlesRecyclerViewAdapter(
-        private val values: ArrayList<Article>)
-    : RecyclerView.Adapter<MyNewsArticlesRecyclerViewAdapter.ViewHolder>() {
+class NewsArticlesRecyclerViewAdapter(
+        private val values: ArrayList<Article>, private val newsArticleListFragment: NewsArticleListFragment)
+    : RecyclerView.Adapter<NewsArticlesRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val articleBinding: ArticleItemBinding = ArticleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -19,7 +19,7 @@ class MyNewsArticlesRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.articleItemBinding.article = item
-
+        holder.articleItemBinding.fragment = newsArticleListFragment
     }
 
     override fun getItemCount(): Int = values.size

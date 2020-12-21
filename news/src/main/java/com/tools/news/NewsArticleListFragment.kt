@@ -5,16 +5,16 @@ import android.os.Bundle
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tools.core.BaseActivity
 import com.tools.core.BaseFragment
 import com.tools.core.network.Status
 import com.tools.news.databinding.FragmentNewsArticleListBinding
+import com.tools.news.detail.ArticleDetailFragment
 import com.tools.news.injection.DaggerNewsComponent
 import com.tools.news.network.Article
 import javax.inject.Inject
 
-/**
- * A fragment representing a list of Items.
- */
+
 class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, NewsViewModel>() {
 
     private var columnCount = 1
@@ -23,7 +23,7 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
     lateinit var viewModelFactory: ViewModelFactory
 
 
-    private lateinit var articleAdapter: MyNewsArticlesRecyclerViewAdapter
+    private lateinit var articleAdapter: NewsArticlesRecyclerViewAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,12 +37,11 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
     override fun onAttach(context: Context) {
         super.onAttach(context)
         DaggerNewsComponent.create().inject(this)
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        articleAdapter = MyNewsArticlesRecyclerViewAdapter(arrayListOf())
+        articleAdapter = NewsArticlesRecyclerViewAdapter(arrayListOf(), this)
         binding.viewModel = viewModel
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -112,4 +111,7 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
 
     override fun getToolBar() = binding.appbar.toolbar
 
+    fun onArticleClickListener(article: Article) {
+        (context as BaseActivity).replaceFragment(ArticleDetailFragment.newInstance(article), true)
+    }
 }
