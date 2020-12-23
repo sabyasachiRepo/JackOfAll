@@ -1,7 +1,10 @@
 package com.tools.news.detail
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.tools.core.BaseFragment
 import com.tools.news.R
 import com.tools.news.ViewModelFactory
@@ -20,6 +23,8 @@ class ArticleDetailFragment : BaseFragment<FragmentArticleDetailBinding, NewsDet
 
     private var article: Article? = null
 
+    var isWebViewLoading: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -27,6 +32,28 @@ class ArticleDetailFragment : BaseFragment<FragmentArticleDetailBinding, NewsDet
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (article != null) {
+            webViewLoadListener()
+            binding.article = article
+            binding.fragment = this
+        }
+    }
+
+    private fun webViewLoadListener() {
+        binding.webview.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                isWebViewLoading = true
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                isWebViewLoading = false
+            }
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,5 +77,5 @@ class ArticleDetailFragment : BaseFragment<FragmentArticleDetailBinding, NewsDet
 
     override fun getFragmentLayout() = R.layout.fragment_article_detail
 
-    override fun getToolBar() = binding.appbar.toolbar
+    override fun getToolBar() = null
 }

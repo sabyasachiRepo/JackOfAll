@@ -31,17 +31,20 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
         getToolBar()?.apply {
             if (activity is AppCompatActivity) (activity as AppCompatActivity).setSupportActionBar(this)
             setNavigationOnClickListener {
-                activity?.apply {
-                    if (supportFragmentManager.backStackEntryCount > 0) {
-                        supportFragmentManager.popBackStack()
-                    } else {
-                        onBackPressed()
-                    }
-                }
-
+                onBackClick()
             }
         }
 
+    }
+
+    fun onBackClick() {
+        activity?.apply {
+            if (supportFragmentManager.backStackEntryCount > 0) {
+                supportFragmentManager.popBackStack()
+            } else {
+                onBackPressed()
+            }
+        }
     }
 
     abstract fun getFactory(): ViewModelProvider.Factory
