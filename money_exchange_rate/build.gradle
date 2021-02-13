@@ -39,8 +39,10 @@ dependencies {
     implementation project(':app')
     implementation project(':core_lib')
 
-    kapt 'com.google.dagger:dagger-android-processor:2.11'
-    kapt 'com.google.dagger:dagger-compiler:2.27'
+   // kapt 'com.google.dagger:dagger-android-processor:2.11'
+  //  kapt 'com.google.dagger:dagger-compiler:2.27'
+
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.4'
 

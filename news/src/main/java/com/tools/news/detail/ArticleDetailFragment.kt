@@ -6,20 +6,17 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.tools.core.BaseFragment
+import com.tools.jackofall.di.FeatureModuleDependency
 import com.tools.news.R
-import com.tools.news.ViewModelFactory
 import com.tools.news.databinding.FragmentArticleDetailBinding
 import com.tools.news.injection.DaggerNewsComponent
 import com.tools.news.network.Article
-import javax.inject.Inject
+import dagger.hilt.android.EntryPointAccessors
 
 
 private const val ARG_ARTICLE_DETAIL = "article detail"
 
-class ArticleDetailFragment : BaseFragment<FragmentArticleDetailBinding, NewsDetailViewModel>() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+class ArticleDetailFragment : BaseFragment<FragmentArticleDetailBinding>() {
 
     private var article: Article? = null
 
@@ -57,7 +54,15 @@ class ArticleDetailFragment : BaseFragment<FragmentArticleDetailBinding, NewsDet
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        DaggerNewsComponent.create().inject(this)
+        DaggerNewsComponent.builder()
+                .appDependencies(
+                        EntryPointAccessors.fromApplication(
+                                context,
+                                FeatureModuleDependency::class.java
+                        )
+                )
+                .build()
+                .inject(this)
     }
 
 
@@ -71,9 +76,7 @@ class ArticleDetailFragment : BaseFragment<FragmentArticleDetailBinding, NewsDet
                 }
     }
 
-    override fun getFactory() = viewModelFactory
 
-    override fun getViewModel() = NewsDetailViewModel::class.java
 
     override fun getFragmentLayout() = R.layout.fragment_article_detail
 

@@ -6,8 +6,11 @@ import com.tools.money.ViewModelFactory
 import com.tools.money.network.CurrencyAPI
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
 
 @Module
+@InstallIn(FragmentComponent::class)
 class MoneyExchangeModule {
     @Provides
     fun provideCurrencyAPI(): CurrencyAPI {

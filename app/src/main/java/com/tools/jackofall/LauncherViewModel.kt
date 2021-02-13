@@ -1,13 +1,13 @@
 package com.tools.jackofall
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.tools.core.data.shared.PreferenceStorage
-import com.tools.core.data.shared.SharedPrefStorage
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LauncherViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class LauncherViewModel @Inject constructor(preference: PreferenceStorage) : ViewModel() {
 
-    private val preference: PreferenceStorage = SharedPrefStorage(application)
     val launchType: LaunchType = when {
         preference.onBoardingCompleted -> {
             LaunchType.MAIN_SCREEN

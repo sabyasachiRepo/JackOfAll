@@ -3,25 +3,29 @@ package com.tools.news
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tools.core.BaseActivity
 import com.tools.core.BaseFragment
 import com.tools.core.network.Status
+import com.tools.jackofall.di.FeatureModuleDependency
 import com.tools.news.databinding.FragmentNewsArticleListBinding
 import com.tools.news.detail.ArticleDetailFragment
 import com.tools.news.injection.DaggerNewsComponent
 import com.tools.news.network.Article
+import dagger.hilt.android.EntryPointAccessors
 import javax.inject.Inject
 
 
-class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, NewsViewModel>() {
+class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding>() {
 
     private var columnCount = 1
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+    val viewModel: NewsViewModel by viewModels { viewModelFactory }
 
     private lateinit var articleAdapter: NewsArticlesRecyclerViewAdapter
 
@@ -36,7 +40,15 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        DaggerNewsComponent.create().inject(this)
+        DaggerNewsComponent.builder()
+                .appDependencies(
+                        EntryPointAccessors.fromApplication(
+                                context,
+                                FeatureModuleDependency::class.java
+                        )
+                )
+                .build()
+                .inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -103,9 +115,7 @@ class NewsArticleListFragment : BaseFragment<FragmentNewsArticleListBinding, New
         }
     }
 
-    override fun getFactory() = viewModelFactory
 
-    override fun getViewModel() = NewsViewModel::class.java
 
     override fun getFragmentLayout() = R.layout.fragment_news_article_list
 

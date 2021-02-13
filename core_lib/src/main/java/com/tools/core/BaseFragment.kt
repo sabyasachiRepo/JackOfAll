@@ -12,17 +12,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 
-abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment() {
-    lateinit var viewModel: VM
+abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
+
     lateinit var binding: T
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getFragmentLayout(), container, false)
-        viewModel = ViewModelProviders.of(this, getFactory()).get(getViewModel())
         setToolBar()
         return binding.root
     }
@@ -46,11 +43,6 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
             }
         }
     }
-
-    abstract fun getFactory(): ViewModelProvider.Factory
-
-    abstract fun getViewModel(): Class<VM>
-
     abstract fun getFragmentLayout(): Int
 
     abstract fun getToolBar(): Toolbar?

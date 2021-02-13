@@ -13,7 +13,7 @@ import com.tools.core.FeatureRegistryImpl
 import com.tools.jackofall.databinding.FragmentMainBinding
 
 class MainFragment
-    : BaseFragment<FragmentMainBinding, MainViewModel>() {
+    : BaseFragment<FragmentMainBinding>() {
 
     private lateinit var manager: SplitInstallManager
     private val moduleNews by lazy { getString(R.string.title_news) }
@@ -192,9 +192,7 @@ class MainFragment
     }
 
     private val TAG = "DynamicFeatures"
-    override fun getFactory() = defaultViewModelProviderFactory
 
-    override fun getViewModel() = MainViewModel::class.java
 
     override fun getFragmentLayout() = R.layout.fragment_main
     override fun getToolBar() = binding.appbar.toolbar

@@ -8,34 +8,44 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.tools.core.BaseFragment
 import com.tools.core.network.Status
-import com.tools.jackofall.JackOfAllApplication
+import com.tools.jackofall.di.FeatureModuleDependency
 import com.tools.money.injection.DaggerMoneyExchangeComponent
 import com.tools.money_exchange_rate.R
 import com.tools.money_exchange_rate.databinding.ExchangeRateFragmentBinding
+import dagger.hilt.android.EntryPointAccessors
 import timber.log.Timber
 import javax.inject.Inject
 
-class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeRateViewModel>(), OnItemSelectedListener {
+class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding>(), OnItemSelectedListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    val exchangeRateViewModel: ExchangeRateViewModel by viewModels { viewModelFactory }
 
     private lateinit var spFromCurrency: Spinner
     private lateinit var spToCurrency: Spinner
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = (activity?.applicationContext as JackOfAllApplication).appComponent
-        DaggerMoneyExchangeComponent.factory().create(appComponent).inject(this)
+        DaggerMoneyExchangeComponent.builder()
+                .appDependencies(
+                        EntryPointAccessors.fromApplication(
+                                context,
+                                FeatureModuleDependency::class.java
+                        )
+                )
+                .build()
+                .inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExchangeRateViewModel::class.java)
-        binding.viewModel = viewModel
+        //  viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExchangeRateViewModel::class.java)
+        binding.viewModel = exchangeRateViewModel
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
         }
@@ -63,7 +73,7 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeR
     }
 
     private fun getCurrencies() {
-        viewModel.currenciesLiveData.observe(viewLifecycleOwner, Observer {
+        exchangeRateViewModel.currenciesLiveData.observe(viewLifecycleOwner, Observer {
 
             it?.let { resource ->
                 when (resource.status) {
@@ -73,8 +83,8 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeR
                         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         spFromCurrency.adapter = currencyAdapter
                         spToCurrency.adapter = currencyAdapter
-                        val historyFromCurrency = currencyAdapter.getPosition(viewModel.fromCurrency)
-                        val historyToCurrency = currencyAdapter.getPosition(viewModel.toCurrency)
+                        val historyFromCurrency = currencyAdapter.getPosition(exchangeRateViewModel.fromCurrency)
+                        val historyToCurrency = currencyAdapter.getPosition(exchangeRateViewModel.toCurrency)
                         spFromCurrency.setSelection(historyFromCurrency)
                         spToCurrency.setSelection(historyToCurrency)
                     }
@@ -92,9 +102,9 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeR
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         if (parent.id == R.id.spinner_from_currency) {
-            viewModel.fromCurrency = parent.getItemAtPosition(position) as String
+            exchangeRateViewModel.fromCurrency = parent.getItemAtPosition(position) as String
         } else {
-            viewModel.toCurrency = parent.getItemAtPosition(position) as String
+            exchangeRateViewModel.toCurrency = parent.getItemAtPosition(position) as String
         }
     }
 
@@ -109,9 +119,6 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding, ExchangeR
     }
 
     override fun getFragmentLayout() = R.layout.exchange_rate_fragment
-    override fun getFactory() = viewModelFactory
-
-    override fun getViewModel() = ExchangeRateViewModel::class.java
 
     override fun getToolBar() = binding.appbar.toolbar
 

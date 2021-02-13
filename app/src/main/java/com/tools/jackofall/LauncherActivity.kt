@@ -2,13 +2,17 @@ package com.tools.jackofall
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val launcherViewModel = ViewModelProviders.of(this).get(LauncherViewModel::class.java)
+
+        val launcherViewModel: LauncherViewModel by viewModels()
+
         when (launcherViewModel.launchType) {
             LaunchType.MAIN_SCREEN -> {
                 startActivity(Intent(this, MainActivity::class.java))

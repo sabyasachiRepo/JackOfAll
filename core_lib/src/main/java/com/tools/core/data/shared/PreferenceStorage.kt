@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -14,7 +16,7 @@ interface PreferenceStorage {
 }
 
 
-class SharedPrefStorage(context: Context) : PreferenceStorage {
+class SharedPrefStorage @Inject constructor(@ApplicationContext context: Context) : PreferenceStorage {
 
     private val pref: Lazy<SharedPreferences> = lazy { context.applicationContext.getSharedPreferences(PREFS_NAME, MODE_PRIVATE) }
 
