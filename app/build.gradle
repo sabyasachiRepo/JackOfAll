@@ -26,7 +26,7 @@ android {
         }
     }
 
-    dynamicFeatures = [":money_exchange_rate", ':news']
+    dynamicFeatures = [":money_exchange_rate", ':news',':weather']
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
