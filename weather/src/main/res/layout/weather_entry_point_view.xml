@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/margin_small"
-        android:text="@string/title_weather"
+        android:text="@string/weather_title"
         android:textColor="@android:color/black"
         android:textSize="@dimen/feature_module_text_size"
         app:layout_constraintLeft_toLeftOf="parent"
