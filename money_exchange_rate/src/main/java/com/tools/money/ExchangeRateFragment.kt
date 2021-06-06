@@ -25,6 +25,7 @@ class ExchangeRateFragment : BaseFragment<ExchangeRateFragmentBinding>(), OnItem
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+
     val exchangeRateViewModel: ExchangeRateViewModel by viewModels { viewModelFactory }
 
     private lateinit var spFromCurrency: Spinner
