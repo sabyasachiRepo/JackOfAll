@@ -5,14 +5,14 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.2"
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -36,8 +36,9 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
-
     }
+
+
 }
 
 dependencies {
@@ -56,17 +57,15 @@ dependencies {
     //LifeCycle
     api 'androidx.lifecycle:lifecycle-common:2.2.0'
     api 'androidx.lifecycle:lifecycle-runtime:2.2.0'
-    api 'android.arch.lifecycle:extensions:2.2.0'
+    //api 'android.arch.lifecycle:extensions:2.2.0'
     api 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
 
     // LiveData
-    api 'androidx.appcompat:appcompat:1.1.0'
+    api 'androidx.appcompat:appcompat:1.3.1'
     api 'com.squareup.retrofit2:retrofit:2.7.2'
     api 'android.arch.lifecycle:livedata:1.1.1'
     api "androidx.core:core-ktx:1.3.0"
 
-  //  api 'com.google.dagger:dagger:2.27'
-   // annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
 
 
     api 'com.google.android.play:core:1.7.3'
@@ -80,6 +79,22 @@ dependencies {
     api 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     api 'com.jakewharton.timber:timber:4.7.1'
 
+    // Integration with activities
+    api 'androidx.activity:activity-compose:1.3.1'
+    // Compose Material Design
+    api 'androidx.compose.material:material:1.0.1'
+    // Animations
+    api 'androidx.compose.animation:animation:1.0.1'
+    // Tooling support (Previews, etc.)
+    api 'androidx.compose.ui:ui-tooling:1.0.1'
+    // Integration with ViewModels
+    api 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.1'
+
+    // When using a AppCompat theme
+    api "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
+
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -88,5 +103,6 @@ dependencies {
     api 'com.google.android.material:material:1.2.0-alpha02'
     api "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    api 'com.google.android.gms:play-services-location:18.0.0'
 
 }

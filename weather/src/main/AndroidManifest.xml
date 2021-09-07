@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.tools.weather">
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <dist:module
         dist:instant="false"
         dist:title="@string/title_weather">
@@ -13,10 +14,12 @@
     </dist:module>
 
     <application>
+
         <provider
             android:name="com.tools.weather.WeatherProvider"
             android:authorities="${applicationId}.weather.initializationProvider"
             android:enabled="true"
             android:exported="false" />
     </application>
+
 </manifest>
