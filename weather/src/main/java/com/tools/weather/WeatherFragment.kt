@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,15 +29,29 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.location.LocationManagerCompat.isLocationEnabled
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.accompanist.appcompattheme.AppCompatTheme
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.*
 import com.tools.core.BaseFragment
+import com.tools.core.network.Status
+import com.tools.jackofall.di.FeatureModuleDependency
+import com.tools.news.injection.DaggerWeatherComponent
 import com.tools.weather.databinding.FragmentWeatherBinding
+import dagger.hilt.android.EntryPointAccessors
+import timber.log.Timber
+import javax.inject.Inject
 
 
 class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    val weatherViewModel: WeatherViewModel by viewModels { viewModelFactory }
+
     val PERMISSION_ID = 42
     lateinit var mFusedLocationClient: FusedLocationProviderClient
     companion object {
@@ -49,6 +64,19 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
     override fun getFragmentLayout() = R.layout.fragment_weather
 
     override fun getToolBar() = binding.appbar.toolbar
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerWeatherComponent.builder()
+            .appDependencies(
+                EntryPointAccessors.fromApplication(
+                    context,
+                    FeatureModuleDependency::class.java
+                )
+            )
+            .build()
+            .inject(this)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -80,9 +108,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                         requestNewLocationData()
                     } else {
                         Toast.makeText(requireContext(),  "${it.latitude.toString()} And ${ it.longitude.toString()}", Toast.LENGTH_LONG).show()
-
-                        it.latitude.toString()
-                        it.longitude.toString()
+                        getCurrentWeather( it.latitude.toString(),it.longitude.toString())
                     }
                 }
 
@@ -115,9 +141,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         override fun onLocationResult(locationResult: LocationResult) {
             var mLastLocation: Location = locationResult.lastLocation
             Toast.makeText(requireContext(),  "${  mLastLocation.latitude.toString()} And ${  mLastLocation.longitude.toString()}", Toast.LENGTH_LONG).show()
-
-
-
+            getCurrentWeather( mLastLocation.latitude.toString(),mLastLocation.longitude.toString())
         }
     }
 
@@ -195,6 +219,27 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         Content()
     }
 
+    private fun getCurrentWeather(lat:String,lon:String) {
+        weatherViewModel.getCurrentWeather(lat,lon).observe(viewLifecycleOwner, Observer {
+
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                      resource.data?.let {
+                          it.data
+                          Toast.makeText(requireContext(),  "Result received", Toast.LENGTH_LONG).show()
+                      }
+                    }
+                    Status.ERROR -> {
+                        Timber.d("Error while getting currency data")
+                        showErrorAlertMessage()
+                    }
+
+                }
+            }
+        })
+
+    }
 
 
 }

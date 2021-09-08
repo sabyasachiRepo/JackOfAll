@@ -42,6 +42,16 @@ public class RetrofitProvider {
         return retrofit;
     }
 
+    public Retrofit getWeatherRetrofit() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.airvisual.com/v2/")
+                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getOkHttpClient())
+                .build();
+        return retrofit;
+    }
+
     @NotNull
     private OkHttpClient getOkHttpClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
