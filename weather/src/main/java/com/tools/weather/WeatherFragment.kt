@@ -40,6 +40,8 @@ import com.tools.core.network.Status
 import com.tools.jackofall.di.FeatureModuleDependency
 import com.tools.news.injection.DaggerWeatherComponent
 import com.tools.weather.databinding.FragmentWeatherBinding
+import com.tools.weather.network.Data
+import com.tools.weather.network.WeatherResponse
 import dagger.hilt.android.EntryPointAccessors
 import timber.log.Timber
 import javax.inject.Inject
@@ -212,6 +214,15 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     }
 
+    @Composable
+    fun WeatherData(data: Data){
+        Column(modifier = Modifier
+            .padding(start = 8.dp)
+            ) {
+            Text(text = data.city  , fontWeight = FontWeight.Bold)
+
+        }
+    }
 
     @Preview
     @Composable

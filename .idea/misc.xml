@@ -9,8 +9,15 @@
         <entry key="../../../../layout/compose-model-1631002520870.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1631093889070.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1631103768569.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1631196441479.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1631196545862.xml" value="1.0" />
+        <entry key="../../../../layout/compose-model-1633318704589.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1633345129470.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1633345177170.xml" value="1.0" />
+        <entry key="../../../../layout/compose-model-1636463984628.xml" value="0.1" />
         <entry key="core_lib/src/main/res/layout/app_bar.xml" value="0.1" />
         <entry key="money_exchange_rate/src/main/res/layout/exchange_rate_fragment.xml" value="0.1" />
+        <entry key="weather/src/main/res/drawable/ic_sun.xml" value="0.1" />
         <entry key="weather/src/main/res/layout/fragment_weather.xml" value="0.1" />
       </map>
     </option>

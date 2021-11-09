@@ -52,6 +52,17 @@ public class RetrofitProvider {
         return retrofit;
     }
 
+    public Retrofit getRetrofit() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://donate-env.eba-mxxrxi3v.us-east-2.elasticbeanstalk.com/donate/api/v1/")
+                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getOkHttpClient())
+                .build();
+        return retrofit;
+    }
+
+
     @NotNull
     private OkHttpClient getOkHttpClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
