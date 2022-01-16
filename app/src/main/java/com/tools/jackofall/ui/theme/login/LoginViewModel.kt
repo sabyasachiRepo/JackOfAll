@@ -15,9 +15,6 @@ import javax.inject.Inject
 class LoginViewModel  @Inject constructor(private val loginRepo: LoginRepo):BaseViewModel() {
 
 
-    val onLoginSuccess = MediatorLiveData<Boolean>()
-
-
     fun login(userName:String,password:String)= liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
