@@ -1,5 +1,6 @@
 package com.tools.jackofall.ui.theme.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -14,14 +15,17 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Observer
 import com.tools.core.network.Status
+import com.tools.jackofall.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +33,8 @@ class LoginActivity : ComponentActivity() {
 
     val loginViewModel: LoginViewModel by viewModels()
 
+
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -37,9 +43,10 @@ class LoginActivity : ComponentActivity() {
     }
 
 
+    @ExperimentalComposeUiApi
     @Composable
     fun LoginComposable() {
-
+        val keyboardController = LocalSoftwareKeyboardController.current
         var userNameState by remember {
             mutableStateOf("")
         }
@@ -94,13 +101,13 @@ class LoginActivity : ComponentActivity() {
 
 
 
-                Box() {
                     Button(
                         onClick = {
                             login(userNameState, passwordState){
                                 isProgressGoingOn=it
                             }
                             isProgressGoingOn=true
+                            keyboardController?.hide()
 
                         }, modifier = Modifier
                             .fillMaxWidth(0.5f)
@@ -116,13 +123,13 @@ class LoginActivity : ComponentActivity() {
 
                     if(isProgressGoingOn){
                         CircularProgressIndicator(
-                            modifier = Modifier.padding(top=10.dp)
+                            modifier = Modifier.padding(top=15.dp)
                                 .height(10.dp),
-                            color=Color.White
+                            color=Color.Green
                         )
                     }
 
-                }
+
 
 
             }
@@ -132,6 +139,7 @@ class LoginActivity : ComponentActivity() {
     }
 
 
+    @ExperimentalComposeUiApi
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
@@ -146,7 +154,11 @@ class LoginActivity : ComponentActivity() {
                         resource.data?.let { it -> it.access_token
                         Toast.makeText(this,it.access_token,Toast.LENGTH_LONG).show();
                             updateProgressStatus(false)
+                            loginViewModel.saveAuthData(it)
+                            moveToMainScreen()
                         }
+
+
                     }
                     Status.ERROR -> {
                         //showErrorAlertMessage()
@@ -162,6 +174,10 @@ class LoginActivity : ComponentActivity() {
 
 }
 
+    private fun moveToMainScreen() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
 
 
 }

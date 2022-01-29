@@ -14,7 +14,7 @@ import dagger.hilt.android.components.FragmentComponent
 class MoneyExchangeModule {
     @Provides
     fun provideCurrencyAPI(): CurrencyAPI {
-        return RetrofitProvider.getINSTANCE().moneyExchangeRetrofit.create(CurrencyAPI::class.java)
+        return RetrofitProvider.getINSTANCE().retrofit.create(CurrencyAPI::class.java)
     }
 
     @Provides

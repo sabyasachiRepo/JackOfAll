@@ -8,6 +8,8 @@ import retrofit2.http.POST
 import retrofit2.http.QueryMap
 
 interface JackOfAllAPI {
-    @POST("login")
+    @POST("/donate/api/v1/login")
     suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
+
+
 }

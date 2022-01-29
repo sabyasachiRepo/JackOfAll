@@ -6,6 +6,7 @@ import androidx.lifecycle.liveData
 import com.tools.core.BaseViewModel
 import com.tools.core.network.Resource
 import com.tools.core.network.request.LoginRequest
+import com.tools.core.network.response.LoginResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -24,6 +25,10 @@ class LoginViewModel  @Inject constructor(private val loginRepo: LoginRepo):Base
                 Resource.error(data = null, message = exception.message
                 ?: "Error Occurred!"))
         }
+    }
+
+    fun saveAuthData(loginResponse: LoginResponse){
+        loginRepo.saveAuthTokens(loginResponse)
     }
 
 }
