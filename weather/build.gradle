@@ -1,0 +1,50 @@
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+    }
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        // coreLibraryDesugaringEnabled true
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        useIR = true
+
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.1'
+        kotlinCompilerVersion '1.5.21'
+
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(":app")
+    implementation project(":core_lib")
+    kapt 'com.google.dagger:dagger-compiler:2.35'
+
+}

@@ -13,6 +13,8 @@ interface PreferenceStorage {
     var onBoardingCompleted: Boolean
     var fromCurrency: String
     var toCurrency: String
+    var accessToken:String
+    var refreshToken:String
 }
 
 
@@ -23,6 +25,8 @@ class SharedPrefStorage @Inject constructor(@ApplicationContext context: Context
     override var onBoardingCompleted: Boolean by BooleanPreference(pref, PREF_ONBOARDING, false)
     override var fromCurrency: String by StringPreference(pref, PREF_FROM_CURRENCY, "")
     override var toCurrency: String by StringPreference(pref, PREF_TO_CURRENCY, "")
+    override var accessToken:String by StringPreference(pref,PREF_ACCESS_TOKEN,"")
+    override var refreshToken:String by StringPreference(pref,PREF_REFRESH_TOKEN,"")
 
 
     companion object {
@@ -30,7 +34,8 @@ class SharedPrefStorage @Inject constructor(@ApplicationContext context: Context
         const val PREF_ONBOARDING = "pref_onboarding"
         const val PREF_FROM_CURRENCY = "pref_from_currency"
         const val PREF_TO_CURRENCY = "pref_to_currency"
-
+        const val PREF_ACCESS_TOKEN="pref_access_token"
+        const val PREF_REFRESH_TOKEN="pref_refresh_token"
     }
 
 }

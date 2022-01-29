@@ -3,9 +3,9 @@
     <dimen name="app_padding">10dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_large">32dp</dimen>
-    <dimen name="feature_launch_button_size">110dp</dimen>
+    <dimen name="feature_launch_button_size">100dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="feature_module_icon_size">25dp</dimen>
-    <dimen name="feature_module_text_size">13sp</dimen>
-    <dimen name="feature_module_text_width">100dp</dimen>
+    <dimen name="feature_module_text_size">10sp</dimen>
+    <dimen name="feature_module_text_width">90dp</dimen>
 </resources>
