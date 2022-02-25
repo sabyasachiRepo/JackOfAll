@@ -11,7 +11,7 @@ import dagger.Provides
 class NewsModule {
     @Provides
     fun provideNewsAPI(): NewsAPI {
-        return RetrofitProvider.getINSTANCE().newsRetrofit.create(NewsAPI::class.java)
+        return RetrofitProvider.getINSTANCE().retrofit.create(NewsAPI::class.java)
     }
 
     @Provides

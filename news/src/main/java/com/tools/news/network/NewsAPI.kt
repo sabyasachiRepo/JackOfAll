@@ -1,12 +1,14 @@
 package com.tools.news.network
 
+import com.tools.core.network.header.AuthenticatedHeaders
 import retrofit2.http.GET
+import retrofit2.http.HeaderMap
 import retrofit2.http.QueryMap
 
 interface NewsAPI {
 
-    @GET("top-headlines")
-    suspend fun getTopHeadLines(@QueryMap queryParams: Map<String, String>): NewsArticle
+    @GET("/other/api/news")
+    suspend fun getTopHeadLines(@HeaderMap authenticatedHeaders: AuthenticatedHeaders, @QueryMap queryParams: Map<String, String>): NewsArticle
 
 
 }
