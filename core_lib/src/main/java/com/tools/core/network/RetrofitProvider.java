@@ -1,7 +1,6 @@
 package com.tools.core.network;
 
 import com.github.leonardoxh.livedatacalladapter.LiveDataCallAdapterFactory;
-import com.github.leonardoxh.livedatacalladapter.LiveDataResponseBodyConverterFactory;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,36 +20,7 @@ public class RetrofitProvider {
         return INSTANCE;
     }
 
-    public Retrofit getMoneyExchangeRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://currency-converter5.p.rapidapi.com/currency/")
-                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
-                .addConverterFactory(LiveDataResponseBodyConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(getOkHttpClient())
-                .build();
-        return retrofit;
-    }
 
-    public Retrofit getNewsRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://newsapi.org/v2/")
-                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(getOkHttpClient())
-                .build();
-        return retrofit;
-    }
-
-    public Retrofit getWeatherRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.airvisual.com/v2/")
-                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(getOkHttpClient())
-                .build();
-        return retrofit;
-    }
 
     public Retrofit getRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()

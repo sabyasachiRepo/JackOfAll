@@ -11,7 +11,7 @@ import dagger.Provides
 class WeatherModule {
     @Provides
     fun provideWeatherAPI(): WeatherAPI {
-        return RetrofitProvider.getINSTANCE().weatherRetrofit.create(WeatherAPI::class.java)
+        return RetrofitProvider.getINSTANCE().retrofit.create(WeatherAPI::class.java)
     }
 
     @Provides
