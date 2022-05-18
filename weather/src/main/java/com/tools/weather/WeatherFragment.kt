@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,11 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.*
@@ -41,7 +37,6 @@ import com.tools.jackofall.di.FeatureModuleDependency
 import com.tools.news.injection.DaggerWeatherComponent
 import com.tools.weather.databinding.FragmentWeatherBinding
 import com.tools.weather.network.Data
-import com.tools.weather.network.WeatherResponse
 import dagger.hilt.android.EntryPointAccessors
 import timber.log.Timber
 import javax.inject.Inject
@@ -93,9 +88,11 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
             getLastLocation()
         }
         else{
-            Toast.makeText(context,
-                "This device is not supported", Toast.LENGTH_LONG)
-                .show();
+            Toast.makeText(
+                context,
+                "This device is not supported", Toast.LENGTH_LONG
+            )
+                .show()
         }
     }
 
@@ -109,7 +106,11 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                     if (it == null) {
                         requestNewLocationData()
                     } else {
-                        Toast.makeText(requireContext(),  "${it.latitude.toString()} And ${ it.longitude.toString()}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "${it.latitude} And ${it.longitude}",
+                            Toast.LENGTH_LONG
+                        ).show()
                         getCurrentWeather( it.latitude.toString(),it.longitude.toString())
                     }
                 }
@@ -133,7 +134,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         mLocationRequest.numUpdates = 1
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        mFusedLocationClient!!.requestLocationUpdates(
+        mFusedLocationClient.requestLocationUpdates(
             mLocationRequest, mLocationCallback,
             Looper.myLooper()
         )
@@ -142,7 +143,11 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             var mLastLocation: Location = locationResult.lastLocation
-            Toast.makeText(requireContext(),  "${  mLastLocation.latitude.toString()} And ${  mLastLocation.longitude.toString()}", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                "${mLastLocation.latitude} And ${mLastLocation.longitude}",
+                Toast.LENGTH_LONG
+            ).show()
             getCurrentWeather( mLastLocation.latitude.toString(),mLastLocation.longitude.toString())
         }
     }
@@ -232,7 +237,6 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     private fun getCurrentWeather(lat:String,lon:String) {
         weatherViewModel.getCurrentWeather(lat,lon).observe(viewLifecycleOwner, Observer {
-
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
@@ -245,7 +249,6 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                         Timber.d("Error while getting currency data")
                         showErrorAlertMessage()
                     }
-
                 }
             }
         })

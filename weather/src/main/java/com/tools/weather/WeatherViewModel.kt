@@ -17,4 +17,6 @@ class WeatherViewModel @Inject constructor(private val weatherRepo: WeatherRepo)
                 ?: "Error Occurred!"))
         }
     }
+
+
 }
