@@ -11,20 +11,21 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -44,6 +45,11 @@ import javax.inject.Inject
 
 class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
+    val backgroundColor = Color(0xFF7298A1)
+
+
+    val temprature = mutableStateOf("_ _")
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -51,6 +57,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     val PERMISSION_ID = 42
     lateinit var mFusedLocationClient: FusedLocationProviderClient
+
     companion object {
         @JvmStatic
         fun newInstance(): WeatherFragment {
@@ -81,13 +88,14 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
             Content()
         }
 
-        if(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context)==ConnectionResult.SUCCESS)
-        {
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        if (GoogleApiAvailability.getInstance()
+                .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS
+        ) {
+            mFusedLocationClient =
+                LocationServices.getFusedLocationProviderClient(requireActivity())
 
             getLastLocation()
-        }
-        else{
+        } else {
             Toast.makeText(
                 context,
                 "This device is not supported", Toast.LENGTH_LONG
@@ -111,7 +119,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                             "${it.latitude} And ${it.longitude}",
                             Toast.LENGTH_LONG
                         ).show()
-                        getCurrentWeather( it.latitude.toString(),it.longitude.toString())
+                        getCurrentWeather(it.latitude.toString(), it.longitude.toString())
                     }
                 }
 
@@ -148,12 +156,13 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                 "${mLastLocation.latitude} And ${mLastLocation.longitude}",
                 Toast.LENGTH_LONG
             ).show()
-            getCurrentWeather( mLastLocation.latitude.toString(),mLastLocation.longitude.toString())
+            getCurrentWeather(mLastLocation.latitude.toString(), mLastLocation.longitude.toString())
         }
     }
 
     private fun isLocationEnabled(): Boolean {
-        var locationManager: LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var locationManager: LocationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )
@@ -176,13 +185,20 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     private fun requestPermissions() {
         requestPermissions(
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
             PERMISSION_ID
         )
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == PERMISSION_ID) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 getLastLocation()
@@ -192,66 +208,101 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
 
     @Composable
-    fun Content(){
-        Row(
-            Modifier
-                .wrapContentHeight()
-                .padding(8.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(MaterialTheme.colors.surface)
-                .clickable(onClick = { /* Ignoring onClick */ })
-                .padding(16.dp)
+    fun Content() {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(color = backgroundColor),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            Box(
+                modifier = Modifier
+                    .height(250.dp)
+                    .width(250.dp)
+                    .padding(bottom = 50.dp)
             ) {
-
-            Surface(modifier = Modifier.size(50.dp),shape = CircleShape,color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)){
+                Image(
+                    painter = painterResource(id = R.drawable.weather_01n),
+                    contentDescription = "Weather Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
 
             }
 
-            Column(modifier = Modifier
-                .padding(start = 8.dp)
-                .align(Alignment.CenterVertically)) {
-                Text(text = "Alferd Sisley", fontWeight = FontWeight.Bold)
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text("3 minutes go", style = MaterialTheme.typography.body2)
-                }
+
+            Box(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight()
+            ) {
+                Text(
+                    text = temprature.value,
+                    Modifier
+                        .align(
+                            Alignment.Center
+                        )
+                        .padding(end = 20.dp, top = 10.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 100.sp
+                )
+                Text(
+                    text = "o",
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 40.sp
+                )
+
             }
+
+
         }
 
     }
 
     @Composable
-    fun WeatherData(data: Data){
-        Column(modifier = Modifier
-            .padding(start = 8.dp)
-            ) {
-            Text(text = data.city  , fontWeight = FontWeight.Bold)
+    fun WeatherData(data: Data) {
+        Column(
+            modifier = Modifier
+                .padding(start = 8.dp)
+        ) {
+            Text(text = data.city, fontWeight = FontWeight.Bold)
 
         }
     }
 
     @Preview
     @Composable
-    fun ContentPreview(){
+    fun ContentPreview() {
         Content()
     }
 
-    private fun getCurrentWeather(lat:String,lon:String) {
-        weatherViewModel.getCurrentWeather(lat,lon).observe(viewLifecycleOwner, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                      resource.data?.let {
-                          it.data
-                          Toast.makeText(requireContext(),  "Result received", Toast.LENGTH_LONG).show()
-                      }
-                    }
-                    Status.ERROR -> {
-                        Timber.d("Error while getting currency data")
-                        showErrorAlertMessage()
+    private fun getCurrentWeather(lat: String, lon: String) {
+        weatherViewModel.getCurrentWeather(lat, lon)
+            .observe(viewLifecycleOwner, Observer { response ->
+                response?.let { resource ->
+                    when (resource.status) {
+                        Status.SUCCESS -> {
+                            resource.data?.let {
+                                temprature.value = it.data.current.weather.tp.toString()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Result received",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        Status.ERROR -> {
+                            Timber.d("Error while getting currency data")
+                            showErrorAlertMessage()
+                        }
                     }
                 }
-            }
-        })
+            })
 
     }
 

@@ -104,5 +104,7 @@ dependencies {
     api "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     api 'com.google.android.gms:play-services-location:18.0.0'
+    // To use constraintlayout in compose
+    api "androidx.constraintlayout:constraintlayout-compose:1.0.0"
 
 }
