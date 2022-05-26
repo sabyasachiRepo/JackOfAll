@@ -20,7 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +36,6 @@ import com.tools.core.network.Status
 import com.tools.jackofall.di.FeatureModuleDependency
 import com.tools.news.injection.DaggerWeatherComponent
 import com.tools.weather.databinding.FragmentWeatherBinding
-import com.tools.weather.network.Data
 import dagger.hilt.android.EntryPointAccessors
 import timber.log.Timber
 import javax.inject.Inject
@@ -49,6 +47,8 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
 
     val temprature = mutableStateOf("_ _")
+
+    val currentWeatherIcon = mutableStateOf(R.drawable.weather_01d)
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -221,15 +221,11 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
             Box(
                 modifier = Modifier
-                    .height(250.dp)
-                    .width(250.dp)
-                    .padding(bottom = 50.dp)
+                    .padding(end = 40.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.weather_01n),
-                    contentDescription = "Weather Image",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    painter = painterResource(id = currentWeatherIcon.value),
+                    contentDescription = "Weather Image"
                 )
 
             }
@@ -264,16 +260,6 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     }
 
-    @Composable
-    fun WeatherData(data: Data) {
-        Column(
-            modifier = Modifier
-                .padding(start = 8.dp)
-        ) {
-            Text(text = data.city, fontWeight = FontWeight.Bold)
-
-        }
-    }
 
     @Preview
     @Composable
@@ -289,11 +275,8 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                         Status.SUCCESS -> {
                             resource.data?.let {
                                 temprature.value = it.data.current.weather.tp.toString()
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Result received",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                currentWeatherIcon.value =
+                                    WeatherUtils.getIcon(it.data.current.weather.ic)
                             }
                         }
                         Status.ERROR -> {
